@@ -9,14 +9,15 @@ Gem::Specification.new do |s|
   s.version     = S3FileCacheDownload::VERSION
   s.authors     = ["wat-aro"]
   s.email       = ["kazutas1008@gmail.com"]
-  s.homepage    = "TODO"
-  s.summary     = "TODO: Summary of S3FileCacheDownload."
-  s.description = "TODO: Description of S3FileCacheDownload."
+  s.homepage    = "https://github.com/esminc/s3_file_cache_download"
+  s.summary     = "provide helper method that S3 file download use temporaly file"
+  s.description = "provide helper method that S3 file download use temporaly file"
   s.license     = "MIT"
 
   s.files = Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
 
-  s.add_dependency "rails", "~> 5.0.2"
+  s.add_dependency "rails", "~> 5.0.1"
 
   s.add_development_dependency "sqlite3"
+  s.add_development_dependency "rspec"
 end

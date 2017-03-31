@@ -1,10 +1,10 @@
 require 's3_file_cache_download/engine'
 require 'action_controller'
-require 'active_support/configuable'
+require 'active_support/configurable'
 require 'aws-sdk'
 
 module S3FileCacheDownload
-  include ActiveSupport::Configuable
+  include ActiveSupport::Configurable
 
   config_accessor :aws_access_key_id, instance_reader: false, instance_writer: false do
     ENV['AWS_ACCESS_KEY']
@@ -18,7 +18,7 @@ module S3FileCacheDownload
     ENV['FILE_CACHE_DIRECTORY']
   end
 
-  config_accessor :expire_hour, instance_reader: false, instance_writer: false do
+  config_accessor :expire_seconds, instance_reader: false, instance_writer: false do
     ENV['EXPIRE_SECONDS']
   end
 

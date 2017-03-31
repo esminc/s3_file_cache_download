@@ -24,45 +24,10 @@ module S3FileCacheDownload
 
   module Helper
     def send_s3_file(bucket_name, path)
-      s3_object = S3FileCacheDownload::S3Object.new(bucket_name, path)
-      s3_file_cache = S3FileCache.find_by(s3_full_path: path)
-
-      unless s3_file_cache
-        s3_file_cache = S3FileCache.create(s3_full_path: path)
-        File.open(s3_file_cache.place, 'w') do |file|
-          s3_object.get do |chunk|
-            file.write chunk
-          end
-        end
-      end
+      s3_file_cache = S3FileCache.find_or_create_by(s3_full_path: path, bucket_name: bucket_name)
+      s3_file_cache.fetch!
 
       send_file s3_file_cache.place, file_name: s3_file_cache.filename
-    end
-
-    private
-
-    def download_directory
-      S3FileCacheDownload.file_cache_directory
-    end
-  end
-
-  class S3Object
-    def initialize(bucket_name, path)
-      @bucket = Aws::S3::Resource.new(client: client).bucket(bucket_name)
-      @path   = path
-    end
-
-    def get
-      @bucket.get(@path).body
-    end
-
-    private
-
-    def client
-      @client ||= Aws::S3::Client.new(
-        access_key_id: S3FileCacheDownload.aws_access_key_id,
-        secret_access_key: S3FileCacheDownload.aws_secret_access_key
-      )
     end
   end
 end

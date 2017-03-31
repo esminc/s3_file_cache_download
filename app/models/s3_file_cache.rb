@@ -46,7 +46,7 @@ class S3FileCache < ApplicationRecord
     end
 
     def get
-      @bucket.get(@path).body
+      @bucket.object(@path).get.body
     end
 
     private

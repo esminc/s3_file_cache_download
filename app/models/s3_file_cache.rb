@@ -19,7 +19,7 @@ class S3FileCache < ApplicationRecord
     end
   end
 
-  def fetch!(bucket)
+  def fetch!
     unless File.exist?(place)
       s3_object = S3FileCache::S3Object.new(bucket_name, s3_full_path)
 

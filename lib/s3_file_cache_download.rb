@@ -14,12 +14,12 @@ module S3FileCacheDownload
     ENV['AWS_SECRET_ACCESS_KEY']
   end
 
-  config_accessor :download_directory, instance_reader: false, instance_writer: false do
-    ENV['DOWNLOAD_DIRECTORY']
+  config_accessor :file_cache_directory, instance_reader: false, instance_writer: false do
+    ENV['FILE_CACHE_DIRECTORY']
   end
 
-  config_accessor :expire_time, instance_reader: false, instance_writer: false do
-    ENV['EXPIRE_TIME']
+  config_accessor :expire_hour, instance_reader: false, instance_writer: false do
+    ENV['EXPIRE_SECONDS']
   end
 
   module Helper
@@ -42,7 +42,7 @@ module S3FileCacheDownload
     private
 
     def download_directory
-      S3FileCacheDownload.download_directory
+      S3FileCacheDownload.file_cache_directory
     end
   end
 

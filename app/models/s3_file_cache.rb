@@ -20,13 +20,13 @@ class S3FileCache < ApplicationRecord
   end
 
   def fetch!
-    unless File.exist?(place)
-      s3_object = S3FileCache::S3Object.new(bucket_name, s3_full_path)
+    return if File.exist?(place)
 
-      File.open(place, 'w') do |file|
-        s3_object.get do |chunk|
-          file.write chunk
-        end
+    s3_object = S3FileCache::S3Object.new(bucket_name, s3_full_path)
+
+    File.open(place, 'w') do |file|
+      s3_object.get do |chunk|
+        file.write chunk
       end
     end
   end

@@ -1,10 +1,7 @@
 class FileCache < ApplicationRecord
-  EXPIRE_SECONDS       = S3FileCacheDownload.expire_seconds
-  FILE_CACHE_DIRECTORY = S3FileCacheDownload.file_cache_directory
-
   class << self
     def cleaning_directory_and_record
-      limit = Time.zone.now - EXPIRE_SECONDS
+      limit = Time.zone.now - expire_seconds
 
       expired_files = where('created_at < ?', limit)
       expired_files.each do |expired_file|
@@ -12,9 +9,17 @@ class FileCache < ApplicationRecord
         expired_file.destroy
       end
     end
+
+    def expire_seconds
+      S3FileCacheDownload.expire_seconds.seconds
+    end
+
+    def file_cache_directory
+      S3FileCacheDownload.file_cache_directory
+    end
   end
 
   def place
-    "#{FILE_CACHE_DIRECTORY}/#{id}"
+    "#{FileCache.file_cache_directory}/#{id}"
   end
 end

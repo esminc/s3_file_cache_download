@@ -4,6 +4,8 @@ require 'active_support/configurable'
 require 'aws-sdk'
 
 module S3FileCacheDownload
+  class FileCacheDirectoryNotFound < StandardError; end
+
   include ActiveSupport::Configurable
 
   config_accessor :aws_access_key_id, instance_reader: false, instance_writer: false do
@@ -20,6 +22,14 @@ module S3FileCacheDownload
 
   config_accessor :expire_seconds, instance_reader: false, instance_writer: false do
     ENV['EXPIRE_SECONDS']
+  end
+
+  class << self
+    def configure
+      yield config
+
+      raise FileCacheDirectoryNotFound unless Dir.exist?(config.file_cache_directory)
+    end
   end
 
   module Helper

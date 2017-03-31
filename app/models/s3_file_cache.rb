@@ -1,4 +1,4 @@
-class FileCache < ApplicationRecord
+class S3FileCache < ApplicationRecord
   class << self
     def cleaning_directory_and_record
       limit = Time.zone.now - expire_seconds
@@ -21,7 +21,7 @@ class FileCache < ApplicationRecord
 
   def fetch!(bucket)
     unless File.exist?(place)
-      s3_object = FileCache::S3Object.new(bucket_name, s3_full_path)
+      s3_object = S3FileCache::S3Object.new(bucket_name, s3_full_path)
 
       File.open(place, 'w') do |file|
         s3_object.get do |chunk|
@@ -32,7 +32,7 @@ class FileCache < ApplicationRecord
   end
 
   def place
-    "#{FileCache.file_cache_directory}/#{id}"
+    "#{S3FileCache.file_cache_directory}/#{id}"
   end
 
   def filename

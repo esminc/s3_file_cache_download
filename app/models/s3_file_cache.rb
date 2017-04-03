@@ -19,6 +19,10 @@ class S3FileCache < ApplicationRecord
     end
   end
 
+  def expire?
+    updated_at + S3FileCacheDownload.expire_seconds > Time.zone.now
+  end
+
   def fetch!
     return if File.exist?(place)
 

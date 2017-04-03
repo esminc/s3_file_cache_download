@@ -30,7 +30,7 @@ class S3FileCache < ApplicationRecord
 
     File.open(place, 'w') do |file|
       s3_object.get do |chunk|
-        file.write chunk
+        file.write chunk.read
       end
     end
   end

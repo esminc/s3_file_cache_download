@@ -42,7 +42,7 @@ module S3FileCacheDownload
           s3_file_cache.destroy
         end
 
-        download_file_on_s3(path, bucket_name)
+        s3_file_cache = download_file_on_s3(path, bucket_name)
         send_file s3_file_cache.place, {filename: s3_file_cache.filename}.merge(option)
       end
     end
@@ -50,6 +50,7 @@ module S3FileCacheDownload
     def download_file_on_s3(path, bucket_name)
       cache = SS3FileCache.create!(s3_full_path: path, bucket_name: bucket_name)
       cache.fetch!
+      cache
     end
   end
 end

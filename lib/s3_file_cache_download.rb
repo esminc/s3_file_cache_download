@@ -53,7 +53,7 @@ module S3FileCacheDownload
     end
 
     def download_file_on_s3(path, bucket_name)
-      cache = SS3FileCache.create!(s3_full_path: path, bucket_name: bucket_name)
+      cache = S3FileCache.create!(s3_full_path: path, bucket_name: bucket_name)
       cache.fetch!
       cache
     end

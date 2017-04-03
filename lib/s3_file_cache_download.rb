@@ -40,12 +40,9 @@ module S3FileCacheDownload
         if s3_file_cache.present? and s3_file_cache.expire?
           FileUtils.rm(s3_file_cache.place)
           s3_file_cache.destroy
-
-          download_file_on_s3(path, bucket_name)
-        else
-          download_file_on_s3(path, bucket_name)
         end
 
+        download_file_on_s3(path, bucket_name)
         send_file s3_file_cache.place, {filename: s3_file_cache.filename}.merge(option)
       end
     end

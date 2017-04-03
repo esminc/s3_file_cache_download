@@ -27,12 +27,7 @@ class S3FileCache < ApplicationRecord
     return if File.exist?(place)
 
     s3_object = S3FileCache::S3Object.new(bucket_name, s3_full_path)
-
-    File.open(place, 'w') do |file|
-      s3_object.get do |chunk|
-        file.write chunk.read
-      end
-    end
+    File.write(place, s3_object.get.read)
   end
 
   def place

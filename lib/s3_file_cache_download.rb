@@ -37,12 +37,17 @@ module S3FileCacheDownload
       S3FileCache.transaction do
         s3_file_cache = S3FileCache.find_by(s3_full_path: path, bucket_name: bucket_name)
 
-        if s3_file_cache.present? && s3_file_cache.expire?
-          FileUtils.rm(s3_file_cache.place)
-          s3_file_cache.destroy
+        if s3_file_cache.present?
+          if s3_file_cache.expire?
+            FileUtils.rm(s3_file_cache.place)
+            s3_file_cache.destroy
+
+            s3_file_cache = download_file_on_s3(path, bucket_name)
+          end
+        else
+          s3_file_cache = download_file_on_s3(path, bucket_name)
         end
 
-        s3_file_cache = download_file_on_s3(path, bucket_name)
         send_file s3_file_cache.place, {filename: s3_file_cache.filename}.merge(option)
       end
     end

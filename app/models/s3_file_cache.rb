@@ -28,8 +28,8 @@ class S3FileCache < ApplicationRecord
 
     s3_object = S3FileCache::S3Object.new(bucket_name, s3_full_path)
     File.open(place, 'w') do |file|
-      s3_object.get do |chunk|
-        file.write chunk.read
+      s3_object.get.each_line do |line|
+        file.write line
       end
     end
   end

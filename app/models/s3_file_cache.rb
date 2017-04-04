@@ -1,5 +1,21 @@
 class S3FileCache < ApplicationRecord
   class << self
+    def find_s3_cache_file_or_create!(s3_file_path, bucket_name)
+      S3FileCache.transaction do
+        s3_file_cache = S3FileCache.find_or_create_by!(s3_full_path: s3_file_path, bucket_name: bucket_name)
+
+        if s3_file_cache.expire?
+          FileUtils.rm(s3_file_cache.place)
+          s3_file_cache.destroy
+
+          s3_file_cache = S3FileCache.create!(s3_file_path, bucket_name)
+        end
+
+        s3_file_cache.fetch!
+        s3_file_cache
+      end
+    end
+
     def cleaning_directory_and_record!
       limit = Time.zone.now - expire_seconds
 

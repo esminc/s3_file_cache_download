@@ -20,7 +20,7 @@ class S3FileCache < ApplicationRecord
   end
 
   def expire?
-    updated_at S3FileCacheDownload.expire_seconds < Time.zone.now
+    updated_at + S3FileCacheDownload.expire_seconds < Time.zone.now
   end
 
   def fetch!

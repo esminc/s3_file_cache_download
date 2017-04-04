@@ -34,7 +34,7 @@ module S3FileCacheDownload
 
   module Helper
     def send_s3_file(bucket_name, path, option = {})
-      s3_file_cache = S3FileCache.find_s3_cache_file_or_create_by!(path, bucket_name)
+      s3_file_cache = S3FileCache.find_s3_cache_file_or_create!(path, bucket_name)
 
       send_file s3_file_cache.place, { filename: s3_file_cache.filename }.merge(option)
     end

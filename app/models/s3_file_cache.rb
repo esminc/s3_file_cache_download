@@ -8,7 +8,7 @@ class S3FileCache < ApplicationRecord
           FileUtils.rm(s3_file_cache.place)
           s3_file_cache.destroy
 
-          s3_file_cache = S3FileCache.create!(s3_file_path, bucket_name)
+          s3_file_cache = S3FileCache.create!(s3_full_path: s3_file_path, bucket_name: bucket_name)
         end
 
         s3_file_cache.fetch!

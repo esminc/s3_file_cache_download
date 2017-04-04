@@ -1,8 +1,43 @@
 # S3FileCacheDownload
-Short description and motivation.
+
+PROVIDE helper method that S3 file download use temporaly file
 
 ## Usage
-How to use my plugin.
+
+First, execute `bin/rails s3_file_cache_download_engine:install:migrations`.
+
+Second, include `S3FileCacheDownload::Helper` module to your controller.
+
+```ruby
+  class YourController
+    include S3FileCacheDownload::Helper
+  end
+```
+
+Call `send_s3_file` method.
+
+```ruby
+  class YourController
+    include S3FileCacheDownload
+
+    def show
+      send_s3_file :your_bucket_name, :your_file_key
+    end
+  end
+```
+
+If you want to use option, you can pass option.
+
+```ruby
+  class YourController
+    include S3FileCacheDownload
+
+    def show
+      send_s3_file :your_bucket_name, :your_file_key, disposition: 'inline'
+    end
+  end
+```
+
 
 ## Installation
 Add this line to your application's Gemfile:

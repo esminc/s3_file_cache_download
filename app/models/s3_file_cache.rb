@@ -1,6 +1,6 @@
 class S3FileCache < ApplicationRecord
   class << self
-    def cleaning_directory_and_record
+    def cleaning_directory_and_record!
       limit = Time.zone.now - expire_seconds
 
       expired_files = where('created_at < ?', limit)

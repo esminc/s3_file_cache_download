@@ -1,6 +1,6 @@
 # S3FileCacheDownload
 
-PROVIDE helper method that S3 file download use temporaly file
+Provide helper method that S3 file download use temporaly file
 
 ## Usage
 

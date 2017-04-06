@@ -4,7 +4,12 @@ require 'active_support/configurable'
 require 'aws-sdk'
 
 module S3FileCacheDownload
-  class FileCacheDirectoryNotFound < StandardError; end
+  class FileCacheDirectoryNotFound < StandardError
+    def initialize(cache_dir)
+      @cache_dir = cache_dir
+      super "`#{cache_dir}` is not found"
+    end
+  end
 
   include ActiveSupport::Configurable
 
@@ -28,7 +33,7 @@ module S3FileCacheDownload
     def configure
       yield config
 
-      raise FileCacheDirectoryNotFound unless Dir.exist?(config.file_cache_directory)
+      raise FileCacheDirectoryNotFound, config.file_cache_directory unless Dir.exist?(config.file_cache_directory)
     end
   end
 
